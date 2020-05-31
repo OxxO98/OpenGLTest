@@ -1,0 +1,5 @@
+﻿  glad.c
+  Main.cpp
+D:\GitHub\OpenGLtest\OpenGL\includes\oxxoShader\Shader.h(100,55): warning C4244: '인수': 'float'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+LINK : warning LNK4098: 'MSVCRT' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
+  OpenGLtest.vcxproj -> D:\GitHub\OpenGLtest\Debug\OpenGLtest.exe
