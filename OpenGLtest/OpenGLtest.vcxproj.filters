@@ -21,6 +21,21 @@
     <ClCompile Include="..\OpenGL\glad.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Shader2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\OpenGL\includes\oxxoShader\3.3.shader.fs">
@@ -29,15 +44,33 @@
     <None Include="..\OpenGL\includes\oxxoShader\3.3.shader.vs">
       <Filter>소스 파일</Filter>
     </None>
+    <None Include="..\OpenGL\includes\screenShader\screenShader.fs">
+      <Filter>소스 파일</Filter>
+    </None>
+    <None Include="..\OpenGL\includes\screenShader\screenShader.vs">
+      <Filter>소스 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\OpenGL\includes\oxxoShader\Shader.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="..\OpenGL\includes\stb_image.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="..\OpenGL\includes\glad\glad.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
