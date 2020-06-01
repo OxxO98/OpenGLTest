@@ -1,26 +1,31 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
-#include <oxxoShader/Shader.h>
+#include "ResourceManager.h"
+#include "Game.h"
 
 #include <iostream>
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+
 void processInput(GLFWwindow* window);
-bool defineVertexArray();
+unsigned int* defineVertexArray();
+
 void windowSizeCallback(GLFWwindow* window, int width, int height);
+
 void SCtoNDC(int len, int* SC, float* ret);
 void setColortoNDC(int len, float* NDC, float* Color);
 void setTextoNDC(int len, float* NDC, float* Tex);
 void showVector(int len, float* vector);
 
-unsigned int SCR_WIDTH = 1280;
-unsigned int SCR_HEIGHT = 720;
+unsigned int SCREEN_WIDTH = 1280;
+unsigned int SCREEN_HEIGHT = 720;
+
+Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main(int argc, char** argv) {
 	glfwInit();
@@ -28,55 +33,79 @@ int main(int argc, char** argv) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
+	glfwMakeContextCurrent(window);
+
 	if (window == NULL) {
 		std::cout << "Failed" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	//glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "failed" << std::endl;
 		return -1;
 	}
-	Shader oxxoShader("../OpenGL/includes/oxxoShader/3.3.shader.vs", "../OpenGL/includes/oxxoShader/3.3.shader.fs");
-	
-	defineVertexArray();
+
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	Breakout.Init();
+
+	float deltaTime = 0.0f;
+	float lastFrame = 0.0f;
+
+	Breakout.State = GAME_MENU;
 
 	while (!glfwWindowShouldClose(window)) {
-		//입력
-		processInput(window);
-		//렌더링 명령
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		//calculate delta time
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		glfwPollEvents();
+		//manage user input
+		Breakout.ProcessInput(deltaTime);
+		
+		//update game state
+		Breakout.Update(deltaTime);
+		
+		//render
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		Breakout.Render();
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//glBindTexture(GL_TEXTURE_2D, texture);
-		oxxoShader.use();
-		// 이벤트를 확인하고 버퍼 교체
-		
 		glfwSwapBuffers(window);
 		glfwSetWindowSizeCallback(window, windowSizeCallback);
-		glfwPollEvents();
 	}
-
-	//glDeleteVertexArrays(1, &VAO);
-	//glDeleteBuffers(1, &VAO);
-	//glDeleteBuffers(1, &EBO);
+	
+	ResourceManager::Clear();
 
 	glfwTerminate();
 	return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+	// when a user presses the escape key, we set the WindowShouldClose property to true, closing the application
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+	if (key >= 0 && key < 1024)
+	{
+		if (action == GLFW_PRESS)
+			Breakout.Keys[key] = true;
+		else if (action == GLFW_RELEASE)
+			Breakout.Keys[key] = false;
+	}
+}
+
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	// make sure the viewport matches the new window dimensions; note that width and 
+	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
 }
 
@@ -90,16 +119,16 @@ void windowSizeCallback(GLFWwindow* window, int width, int height) {
 	float ratio = 0.5625;
 	glfwGetWindowSize(window, &width, &height);
 	
-	if (SCR_WIDTH != width) {
+	if (SCREEN_WIDTH != width) {
 		height = width * ratio;
-		SCR_WIDTH = width;
-		SCR_HEIGHT = height;
+		SCREEN_WIDTH = width;
+		SCREEN_HEIGHT = height;
 		//std::cout << SCR_WIDTH << std::endl;
 	}
-	if (SCR_HEIGHT != height) {
+	if (SCREEN_HEIGHT != height) {
 		width = height / ratio;
-		SCR_WIDTH = width;
-		SCR_HEIGHT = height;
+		SCREEN_WIDTH = width;
+		SCREEN_HEIGHT = height;
 		//std::cout << SCR_WIDTH << std::endl;
 	}
 	glfwSetWindowSize(window, width, height);
@@ -116,7 +145,7 @@ void showVector(int len,  float* vector) {
 
 void SCtoNDC(int len, int* SC, float* ret) {
 	for (int i = 0; i < len; i++) {
-		ret[i] = (float)(((float)SC[i]*2)/(float)SCR_HEIGHT-1) ;
+		ret[i] = (float)(((float)SC[i]*2)/(float)SCREEN_HEIGHT -1) ;
 	}
 }
 
@@ -146,8 +175,7 @@ void setTextoNDC(int len, float* NDC, float* Tex) {
 	}
 }
 
-
-bool defineVertexArray() {
+unsigned int* defineVertexArray() {
 	
 	int scBox[] = {
 		720, 720, 0,
@@ -173,11 +201,11 @@ bool defineVertexArray() {
 	float vertices[32];
 
 	SCtoNDC(12, scBox, vertices);
-	showVector(3, vertices);
+	//showVector(3, vertices);
 	setColortoNDC(12, vertices, scBoxc);
-	showVector(6, vertices);
+	//showVector(6, vertices);
 	setTextoNDC(24, vertices, scBoxt);
-	showVector(8, vertices);
+	//showVector(8, vertices);
 
 	unsigned int indices[] = {  // 0부터 시작한다는 것을 명심하세요!
 		0, 1, 3,   // 첫 번째 삼각형
@@ -240,5 +268,6 @@ bool defineVertexArray() {
 	//render shader
 	glBindVertexArray(VAO);
 
-	return true;
+	unsigned int ret[] = { VAO, EBO };
+	return ret;
 }
