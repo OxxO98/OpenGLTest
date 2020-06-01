@@ -11,6 +11,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "GamePage.h"
 
 // Represents the current state of the game
 enum GameState {
@@ -29,6 +30,8 @@ public:
     GameState               State;
     bool                    Keys[1024];
     unsigned int            Width, Height;
+    std::vector<GamePage> Pages;
+    unsigned int page;
     // constructor/destructor
     Game(unsigned int width, unsigned int height);
     ~Game();

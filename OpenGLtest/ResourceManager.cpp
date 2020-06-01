@@ -90,9 +90,6 @@ Shader2D ResourceManager::loadShaderFromFile(const char* vShaderFile, const char
     const char* fShaderCode = fragmentCode.c_str();
     const char* gShaderCode = geometryCode.c_str();
 
-    //oxo private
-    std::cout << vShaderCode << std::endl;
-
     // 2. now create shader object from source code
     Shader2D shader;
     shader.Compile(vShaderCode, fShaderCode, gShaderFile != nullptr ? gShaderCode : nullptr);
