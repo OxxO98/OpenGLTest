@@ -42,6 +42,9 @@
     <ClCompile Include="GamePage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="cTest.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\OpenGL\includes\oxxoShader\3.3.shader.fs">
@@ -83,6 +86,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GamePage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cTest.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
