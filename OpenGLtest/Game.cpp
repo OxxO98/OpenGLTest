@@ -11,6 +11,9 @@
 #include "SpriteRenderer.h"
 #include "GamePage.h"
 
+//C파트
+#include "cTest.h"
+
 #include <iostream>
 
 SpriteRenderer* Renderer;
@@ -42,7 +45,10 @@ void Game::Init()
     
     //ResourceManager::LoadTexture("img/asdf-sq-512-h.png", true, "block_solid");
     ResourceManager::LoadTexture("img/asdf2-h.png", true, "background");
-    
+    ResourceManager::LoadTexture("img/전투.png", true, "fight");
+    ResourceManager::LoadTexture("img/편성.png", true, "set");
+    ResourceManager::LoadTexture("img/이벤트.png", true, "event");
+
     GamePage MainMenu;
     MainMenu.Load(this->Width, this->Height);
 
@@ -56,16 +62,22 @@ void Game::Update(float dt)
 }
 
 void Game::ProcessInput(float dt)
-{
-
+{   
+    //cTest();
 }
 
 void Game::Render()
 {
     //multiple render
-    Texture2D sbackground = ResourceManager::GetTexture("background");
-    Renderer->DrawSprite(sbackground, glm::vec2(200.0f, 400.0f), glm::vec2(200, 200), 0.0f);
-    //Texture2D myTexture = ResourceManager::GetTexture("block");
+    Texture2D fight = ResourceManager::GetTexture("fight");
+    Renderer->DrawSprite(fight, glm::vec2(758.0f, 259.0f), glm::vec2(450, 179), 0.0f);
+    Texture2D set = ResourceManager::GetTexture("set");
+    Renderer->DrawSprite(set, glm::vec2(780.0f, 457.0f), glm::vec2(225, 105), 0.0f);
+    Texture2D event = ResourceManager::GetTexture("event");
+    Renderer->DrawSprite(event, glm::vec2(968.0f, 528.0f), glm::vec2(225, 105), 0.0f);
+    Texture2D background = ResourceManager::GetTexture("background");
+    Renderer->DrawSprite(background, glm::vec2(250.0f, 250.0f), glm::vec2(700, 800), 0.0f);
+    ///Texture2D myTexture = ResourceManager::GetTexture("block");
     //Renderer->DrawSprite(myTexture, glm::vec2(0.0f, 0.0f), glm::vec2(this->Width, this->Height), 0.0f);
     //this->Pages[this->page].Draw(*Renderer);
 }

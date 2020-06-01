@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\OpenGL\glad.c" />
+    <ClCompile Include="cTest.c" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="GamePage.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="..\OpenGL\includes\glad\glad.h" />
     <ClInclude Include="..\OpenGL\includes\stb_image.h" />
+    <ClInclude Include="cTest.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="GamePage.h" />
