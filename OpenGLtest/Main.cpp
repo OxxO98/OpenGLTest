@@ -8,18 +8,12 @@
 
 #include <iostream>
 
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 void processInput(GLFWwindow* window);
 
 void windowSizeCallback(GLFWwindow* window, int width, int height);
-
-void SCtoNDC(int len, int* SC, float* ret);
-void setColortoNDC(int len, float* NDC, float* Color);
-void setTextoNDC(int len, float* NDC, float* Tex);
-void showVector(int len, float* vector);
 
 unsigned int SCREEN_WIDTH = 1280;
 unsigned int SCREEN_HEIGHT = 720;
@@ -133,43 +127,3 @@ void windowSizeCallback(GLFWwindow* window, int width, int height) {
 	glfwSetWindowSize(window, width, height);
 }
 
-void showVector(int len,  float* vector) {
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < len; j++) {
-			std::cout << vector[i * len + j] << "\t";
-		}
-		std::cout << "\n";
-	}
-}
-
-void SCtoNDC(int len, int* SC, float* ret) {
-	for (int i = 0; i < len; i++) {
-		ret[i] = (float)(((float)SC[i]*2)/(float)SCREEN_HEIGHT -1) ;
-	}
-}
-
-void setColortoNDC(int len, float* NDC, float* Color) {
-	for (int i = 3; i >= 0; i--) {
-		NDC[i * 6 + 2] = NDC[i * 3 + 2];
-		NDC[i * 6 + 1] = NDC[i * 3 + 1];
-		NDC[i * 6] = NDC[i * 3];
-
-		NDC[i * 6 + 3] = Color[i * 3];
-		NDC[i * 6 + 4] = Color[i * 3 + 1];
-		NDC[i * 6 + 5] = Color[i * 3 + 2];
-	}
-}
-
-void setTextoNDC(int len, float* NDC, float* Tex) {
-	for (int i = 3; i >= 0; i--) {
-		NDC[i * 8 + 5] = NDC[i * 6 + 5];
-		NDC[i * 8 + 4] = NDC[i * 6 + 4];
-		NDC[i * 8 + 3] = NDC[i * 6 + 3];
-		NDC[i * 8 + 2] = NDC[i * 6 + 2];
-		NDC[i * 8 + 1] = NDC[i * 6 + 1];
-		NDC[i * 8] = NDC[i * 6];
-
-		NDC[i * 8 + 6] = Tex[i * 2];
-		NDC[i * 8 + 7] = Tex[i * 2 + 1];
-	}
-}

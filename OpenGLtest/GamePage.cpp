@@ -19,7 +19,6 @@ void GamePage::Load(unsigned int pageWidth, unsigned int pageHeight) {
     if (pageData.size() > 0) {
         this->init(pageData, pageWidth, pageHeight);
     }
-
 }
 
 
