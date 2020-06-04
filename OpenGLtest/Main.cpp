@@ -9,7 +9,9 @@
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode); 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void cursor_callback(GLFWwindow* window, double xpos, double ypos);
 
 void windowSizeCallback(GLFWwindow* window, int width, int height);
 
@@ -60,6 +62,8 @@ int main(int argc, char** argv) {
 
 		//C파트 manage user input
 		glfwSetKeyCallback(window, key_callback);
+		glfwSetCursorPosCallback(window, cursor_callback);
+		glfwSetMouseButtonCallback(window, mouse_button_callback);
 		Breakout.ProcessInput(deltaTime);
 		
 		//C파트 update game state
@@ -92,6 +96,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		else if (action == GLFW_RELEASE)
 			Breakout.Keys[key] = false;
 	}
+}
+
+void cursor_callback(GLFWwindow* window, double xpos, double ypos) {
+	Breakout.Mouse.x = xpos;
+	Breakout.Mouse.y = ypos;
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	Breakout.MouseEvent[0] = button;
+	Breakout.MouseEvent[1] = action;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

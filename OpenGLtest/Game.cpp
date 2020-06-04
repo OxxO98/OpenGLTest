@@ -14,7 +14,7 @@ GameObject* Player;
 const glm::vec2 PLAYER_SIZE(200.0f, 200.0f);
 
 Game::Game(unsigned int width, unsigned int height)
-    : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
+    : State(GAME_ACTIVE), Keys(), Mouse(), MouseEvent(), Width(width), Height(height)
 {
 
 }
@@ -45,13 +45,17 @@ void Game::Init()
     ResourceManager::LoadTexture("img/ÀÌº¥Æ®.png", true, "event");
 
     GamePage MainMenu;
-    MainMenu.Load(this->Width, this->Height);
+    MainMenu.Load("MainMenu",this->Width, this->Height);
+
+    GamePage BattlePage;
+    BattlePage.Load("BattlePage", this->Width, this->Height);
 
     this->Pages.push_back(MainMenu);
+    this->Pages.push_back(BattlePage);
     this->page = 0;
 
     glm::vec2 playerPos = glm::vec2(this->Width / 2.0f - 200.0f, this->Height - 200.0f);
-    Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("background"));
+    Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("background"), "player");
 }
 
 void Game::Update(float dt)
@@ -63,10 +67,26 @@ void Game::ProcessInput(float dt)
 {   
     if (this->State == GAME_ACTIVE)
     {
-        // move playerboard
+        if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {
+            //std::cout << Mouse[0] << Mouse[1] << std::endl;
+            if (MouseCollision(*Player)) {
+                //std::cout << Player->Size.x << Player->Size.y << std::endl;
+                std::cout << "true" << std::endl;
+            }
+            for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
+                if (MouseCollision(Pages[this->page].GameObjs[i])) {
+                    if (Pages[this->page].GameObjs[i].ID == "fight") {
+                        this->State = GAME_WIN;
+                        this->page = 1;
+                        Pages[this->page].Draw(*Renderer);
+                    }
+                }
+            }
+        }
+        // move player
         if (this->Keys[GLFW_KEY_W])
         {
-            Player->Position.y -= 10.0f;
+            Player->Position.y += cTest("up");
         }
         if (this->Keys[GLFW_KEY_A])
         {
@@ -74,7 +94,7 @@ void Game::ProcessInput(float dt)
         }
         if (this->Keys[GLFW_KEY_S])
         {
-            Player->Position.y += 10.0f;
+            Player->Position.y += cTest("down");
         }
         if (this->Keys[GLFW_KEY_D])
         {
@@ -86,14 +106,15 @@ void Game::ProcessInput(float dt)
 void Game::Render()
 {
     //multiple render
-    Texture2D fight = ResourceManager::GetTexture("fight");
-    Renderer->DrawSprite(fight, glm::vec2(758.0f, 259.0f), glm::vec2(450, 179), 0.0f);
-    Texture2D set = ResourceManager::GetTexture("set");
-    Renderer->DrawSprite(set, glm::vec2(780.0f, 457.0f), glm::vec2(225, 105), 0.0f);
-    Texture2D event = ResourceManager::GetTexture("event");
-    Renderer->DrawSprite(event, glm::vec2(968.0f, 528.0f), glm::vec2(225, 105), 0.0f);
-    //Texture2D background = ResourceManager::GetTexture("background");
-    //Renderer->DrawSprite(background, glm::vec2(250.0f, 250.0f), glm::vec2(700, 800), 0.0f);
+    this->Pages[this->page].Draw(*Renderer);
     Player->Draw(*Renderer);
-    //this->Pages[this->page].Draw(*Renderer);
+}
+
+unsigned int Game::MouseCollision(GameObject obj) {
+    if (obj.Position.x < Mouse.x && Mouse.x < obj.Position.x + obj.Size.x) {
+        if (obj.Position.y < Mouse.y && Mouse.y < obj.Position.y + obj.Size.y) {
+            return true;
+        }
+    }
+    return false;
 }

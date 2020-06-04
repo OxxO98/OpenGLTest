@@ -18,6 +18,8 @@ public:
     // game state
     GameState               State;
     bool                    Keys[1024];
+    glm::dvec2              Mouse;
+    int                     MouseEvent[2];
     unsigned int            Width, Height;
     std::vector<GamePage> Pages;
     unsigned int page;
@@ -30,6 +32,8 @@ public:
     void ProcessInput(float dt);
     void Update(float dt);
     void Render();
+
+    unsigned int MouseCollision(GameObject obj);
 };
 
 #endif
