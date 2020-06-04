@@ -4,11 +4,9 @@
 extern "C" {
 #endif // __cplusplus
 
-	float cTest();
+float cTest();
+int getch(void);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
-
-
-

@@ -1,11 +1,3 @@
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
 #include "game.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
@@ -17,6 +9,9 @@
 #include <iostream>
 
 SpriteRenderer* Renderer;
+GameObject* Player;
+
+const glm::vec2 PLAYER_SIZE(200.0f, 200.0f);
 
 Game::Game(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
@@ -54,6 +49,9 @@ void Game::Init()
 
     this->Pages.push_back(MainMenu);
     this->page = 0;
+
+    glm::vec2 playerPos = glm::vec2(this->Width / 2.0f - 200.0f, this->Height - 200.0f);
+    Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("background"));
 }
 
 void Game::Update(float dt)
@@ -63,7 +61,26 @@ void Game::Update(float dt)
 
 void Game::ProcessInput(float dt)
 {   
-    //cTest();
+    if (this->State == GAME_ACTIVE)
+    {
+        // move playerboard
+        if (this->Keys[GLFW_KEY_W])
+        {
+            Player->Position.y -= 10.0f;
+        }
+        if (this->Keys[GLFW_KEY_A])
+        {
+            Player->Position.x -= 10.0f;
+        }
+        if (this->Keys[GLFW_KEY_S])
+        {
+            Player->Position.y += 10.0f;
+        }
+        if (this->Keys[GLFW_KEY_D])
+        {
+            Player->Position.x += 10.0f;
+        }
+    }
 }
 
 void Game::Render()
@@ -75,9 +92,8 @@ void Game::Render()
     Renderer->DrawSprite(set, glm::vec2(780.0f, 457.0f), glm::vec2(225, 105), 0.0f);
     Texture2D event = ResourceManager::GetTexture("event");
     Renderer->DrawSprite(event, glm::vec2(968.0f, 528.0f), glm::vec2(225, 105), 0.0f);
-    Texture2D background = ResourceManager::GetTexture("background");
-    Renderer->DrawSprite(background, glm::vec2(250.0f, 250.0f), glm::vec2(700, 800), 0.0f);
-    ///Texture2D myTexture = ResourceManager::GetTexture("block");
-    //Renderer->DrawSprite(myTexture, glm::vec2(0.0f, 0.0f), glm::vec2(this->Width, this->Height), 0.0f);
+    //Texture2D background = ResourceManager::GetTexture("background");
+    //Renderer->DrawSprite(background, glm::vec2(250.0f, 250.0f), glm::vec2(700, 800), 0.0f);
+    Player->Draw(*Renderer);
     //this->Pages[this->page].Draw(*Renderer);
 }

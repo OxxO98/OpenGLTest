@@ -11,8 +11,6 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-void processInput(GLFWwindow* window);
-
 void windowSizeCallback(GLFWwindow* window, int width, int height);
 
 unsigned int SCREEN_WIDTH = 1280;
@@ -51,7 +49,7 @@ int main(int argc, char** argv) {
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
 
-	Breakout.State = GAME_MENU;
+	//Breakout.State = GAME_MENU;
 
 	while (!glfwWindowShouldClose(window)) {
 		//calculate delta time
@@ -59,10 +57,12 @@ int main(int argc, char** argv) {
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		glfwPollEvents();
-		//manage user input
+
+		//C파트 manage user input
+		glfwSetKeyCallback(window, key_callback);
 		Breakout.ProcessInput(deltaTime);
 		
-		//update game state
+		//C파트 update game state
 		Breakout.Update(deltaTime);
 		
 		//render
@@ -94,18 +94,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	// make sure the viewport matches the new window dimensions; note that width and 
 	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
-}
-
-void processInput(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, true);
-	}
 }
 
 void windowSizeCallback(GLFWwindow* window, int width, int height) {
