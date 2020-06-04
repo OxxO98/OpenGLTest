@@ -4,8 +4,7 @@
 extern "C" {
 #endif // __cplusplus
 
-float cTest();
-int getch(void);
+float cTest(const char* key);
 
 #ifdef __cplusplus
 }
