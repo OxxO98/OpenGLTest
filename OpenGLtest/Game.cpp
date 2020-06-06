@@ -40,9 +40,11 @@ void Game::Init()
     
     //ResourceManager::LoadTexture("img/asdf-sq-512-h.png", true, "block_solid");
     ResourceManager::LoadTexture("img/메인배경.png", false, "mainBackground");
+    ResourceManager::LoadTexture("img/전투배경.png", false, "battleBackground");
     ResourceManager::LoadTexture("img/전투.png", true, "fight");
     ResourceManager::LoadTexture("img/편성.png", true, "set");
     ResourceManager::LoadTexture("img/이벤트.png", true, "event");
+    ResourceManager::LoadTexture("img/CODEX-잉퀴시티오.png", true, "character");
 
     GamePage MainMenu;
     MainMenu.Load("MainMenu",this->Width, this->Height);
