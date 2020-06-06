@@ -40,9 +40,11 @@ void Game::Init()
     
     //ResourceManager::LoadTexture("img/asdf-sq-512-h.png", true, "block_solid");
     ResourceManager::LoadTexture("img/메인배경.png", false, "mainBackground");
+    ResourceManager::LoadTexture("img/전투배경.png", false, "battleBackground");
     ResourceManager::LoadTexture("img/전투.png", true, "fight");
     ResourceManager::LoadTexture("img/편성.png", true, "set");
     ResourceManager::LoadTexture("img/이벤트.png", true, "event");
+    ResourceManager::LoadTexture("img/CODEX-잉퀴시티오.png", true, "character");
 
     GamePage MainMenu;
     MainMenu.Load("MainMenu",this->Width, this->Height);
@@ -74,6 +76,7 @@ void Game::ProcessInput(float dt)
                 //std::cout << Player->Size.x << Player->Size.y << std::endl;
                 std::cout << "true" << std::endl;
             }
+            */
             for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
                 if (MouseCollision(Pages[this->page].GameObjs[i])) {
                     if (Pages[this->page].GameObjs[i].ID == "fight") {
@@ -82,7 +85,6 @@ void Game::ProcessInput(float dt)
                     }
                 }
             }
-            */
         }
         // move player
         if (this->Keys[GLFW_KEY_W])
