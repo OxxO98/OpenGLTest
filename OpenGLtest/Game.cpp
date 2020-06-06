@@ -74,6 +74,7 @@ void Game::ProcessInput(float dt)
                 //std::cout << Player->Size.x << Player->Size.y << std::endl;
                 std::cout << "true" << std::endl;
             }
+            */
             for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
                 if (MouseCollision(Pages[this->page].GameObjs[i])) {
                     if (Pages[this->page].GameObjs[i].ID == "fight") {
@@ -82,7 +83,6 @@ void Game::ProcessInput(float dt)
                     }
                 }
             }
-            */
         }
         // move player
         if (this->Keys[GLFW_KEY_W])

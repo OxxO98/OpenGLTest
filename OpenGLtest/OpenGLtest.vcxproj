@@ -151,7 +151,9 @@
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="GamePage.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="RenderObj.cpp" />
+    <ClCompile Include="RenderObj.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="RenderStorage.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader2D.cpp" />
