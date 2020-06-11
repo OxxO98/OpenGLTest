@@ -3,10 +3,10 @@
 #include "SpriteRenderer.h"
 #include "GamePage.h"
 
+#include <iostream>
+
 //C파트
 #include "cTest.h"
-
-#include <iostream>
 
 SpriteRenderer* Renderer;
 GameObject* Player;
@@ -38,26 +38,32 @@ void Game::Init()
     Renderer = new SpriteRenderer(myShader);
     // load textures
     
-    //ResourceManager::LoadTexture("img/asdf-sq-512-h.png", true, "block_solid");
+    //캐릭터 텍스처 불러오기 (졸라 많아질 예정)
     ResourceManager::LoadTexture("img/메인배경.png", false, "mainBackground");
     ResourceManager::LoadTexture("img/전투배경.png", false, "battleBackground");
     ResourceManager::LoadTexture("img/전투.png", true, "fight");
     ResourceManager::LoadTexture("img/편성.png", true, "set");
     ResourceManager::LoadTexture("img/이벤트.png", true, "event");
-    ResourceManager::LoadTexture("img/CODEX-잉퀴시티오.png", true, "character");
+    ResourceManager::LoadTexture("img/CODEX-잉퀴시티오.png", true, "CID1");
 
+
+    //유저 정보 로드 페이지 로드 전에 할것!
+    initUserCharacters();
+    //showUserCharacters();
+
+    //페이지 로드
     GamePage MainMenu;
     MainMenu.Load("MainMenu",this->Width, this->Height);
-
     GamePage BattlePage;
     BattlePage.Load("BattlePage", this->Width, this->Height);
+    GamePage CharactersPage;
+    CharactersPage.Load("CharactersPage", this->Width, this->Height);
 
     this->Pages.push_back(MainMenu);
     this->Pages.push_back(BattlePage);
+    this->Pages.push_back(CharactersPage);
+    //현재 페이지
     this->page = 0;
-
-    //glm::vec2 playerPos = glm::vec2(this->Width / 2.0f - 200.0f, this->Height - 200.0f);
-    //Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("background"), "player");
 }
 
 void Game::Update(float dt)
@@ -70,38 +76,18 @@ void Game::ProcessInput(float dt)
     if (this->State == GAME_ACTIVE)
     {
         if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {
-            //std::cout << Mouse[0] << Mouse[1] << std::endl;
-            /*
-            if (MouseCollision(*Player)) {
-                //std::cout << Player->Size.x << Player->Size.y << std::endl;
-                std::cout << "true" << std::endl;
-            }
-            */
             for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
                 if (MouseCollision(Pages[this->page].GameObjs[i])) {
                     if (Pages[this->page].GameObjs[i].ID == "fight") {
                         this->page = 1;
                         Pages[this->page].Draw(*Renderer);
                     }
+                    if (Pages[this->page].GameObjs[i].ID == "set") {
+                        this->page = 2;
+                        Pages[this->page].Draw(*Renderer);
+                    }
                 }
             }
-        }
-        // move player
-        if (this->Keys[GLFW_KEY_W])
-        {
-            //Player->Position.y += cTest("up");
-        }
-        if (this->Keys[GLFW_KEY_A])
-        {
-            //Player->Position.x -= 10.0f;
-        }
-        if (this->Keys[GLFW_KEY_S])
-        {
-            //Player->Position.y += cTest("down");
-        }
-        if (this->Keys[GLFW_KEY_D])
-        {
-            //Player->Position.x += 10.0f;
         }
     }
 }

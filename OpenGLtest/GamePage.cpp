@@ -4,6 +4,9 @@
 #include <fstream>
 #include <sstream>
 
+//CÆÄÆ®
+//#include "cTest.h"
+
 void GamePage::Load(std::string page, unsigned int pageWidth, unsigned int pageHeight) {
     this->GameObjs.clear();
      
