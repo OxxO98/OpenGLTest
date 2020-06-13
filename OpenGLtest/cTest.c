@@ -48,10 +48,12 @@ void showUserCharacter(UserCharacter character) {
 
 void setComposition(int index, int UCID) {
 	compCharacters[index] = UCID;
+	printf("%d", UCID);
 }
 
 void procComposition(int index) {
 	procIndex = index;
+	printf("%d", index);
 }
 
 void initComposition() {

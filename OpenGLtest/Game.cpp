@@ -78,55 +78,81 @@ void Game::Init()
 
 void Game::Update(float dt)
 {
-
+    
 }
 
 void Game::ProcessInput(float dt)
 {   
     if (this->State == GAME_ACTIVE)
     {
-        //마우스 이벤트
-        if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {
-            for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
-                if (MouseCollision(Pages[this->page].GameObjs[i])) {
-                    if (Pages[this->page].GameObjs[i].ID == "fight") {
-                        this->page = 1;
-                        Pages[this->page].Draw(*Renderer);
+        //페이지 별로 수정
+        if (Pages[this->page].PID == "MainMenu") {
+            //마우스 이벤트
+            if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {
+                for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
+                    if (MouseCollision(Pages[this->page].GameObjs[i])) {
+                        if (Pages[this->page].GameObjs[i].ID == "fight") {
+                            this->page = 1;
+                            Pages[this->page].Draw(*Renderer);
+                        }
+                        if (Pages[this->page].GameObjs[i].ID == "list") {
+                            this->page = 2;
+                            Pages[this->page].Draw(*Renderer);
+                        }
+                        if (Pages[this->page].GameObjs[i].ID == "set") {
+                            this->page = 3;
+                            Pages[this->page].Draw(*Renderer);
+                        }
                     }
-                    if (Pages[this->page].GameObjs[i].ID == "list") {
-                        this->page = 2;
-                        Pages[this->page].Draw(*Renderer);
+                }
+            }
+        }
+        if(Pages[this->page].PID == "CharacterPage"){
+            //마우스 이벤트
+            if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {
+                for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
+                    if (MouseCollision(Pages[this->page].GameObjs[i])) {
+                        if (Pages[this->page].GameObjs[i].ID == "backwardButton") {
+                            this->page = 0;
+                            Pages[this->page].Draw(*Renderer);
+                        }
                     }
-                    if (Pages[this->page].GameObjs[i].ID == "set") {
-                        this->page = 3;
-                        Pages[this->page].Draw(*Renderer);
+                }
+            }
+        }
+        if (Pages[this->page].PID == "SettingPage") {
+            if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {
+                for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
+                    if (MouseCollision(Pages[this->page].GameObjs[i])) {
+                        std::cout << Pages[this->page].GameObjs[i].ID << std::endl;
+                        if (Pages[this->page].GameObjs[i].ID == "backwardButton") {
+                            this->page = 0;
+                            Pages[this->page].Draw(*Renderer);
+                        }
+                        if (int pos = Pages[this->page].GameObjs[i].ID.find("setButton") != std::string::npos) {
+                            procComposition(std::stoi(Pages[this->page].GameObjs[i].ID.substr(pos + 8)));
+                            this->page = 2;
+                            Pages[this->page].Draw(*Renderer);
+                            this->State = GAME_PROC;
+                            std::cout << "GAME_PROC" << std::endl;
+                        }
                     }
-                    if (Pages[this->page].GameObjs[i].ID == "backwardButton") {
-                        this->page = 0;
-                        Pages[this->page].Draw(*Renderer);
-                    }
-                    /*
-                    if (int pos = Pages[this->page].GameObjs[i].ID.find("setButton") != std::string::npos) {
-                        procComposition(std::stoi(Pages[this->page].GameObjs[i].ID.substr(pos + 8)));
-                        this->State = GAME_PROC;
-                        this->page = 2;
-                        Pages[this->page].Draw(*Renderer);
-                    }
-                    */
                 }
             }
         }
     }
     if (this->State == GAME_PROC) {
-        if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {
-            if (Pages[this->page].PID == "CharacterPage") {
+        if (Pages[this->page].PID == "CharactersPage") {
+            if (MouseEvent[0] == GLFW_MOUSE_BUTTON_LEFT && MouseEvent[1] == GLFW_PRESS) {  
                 for (int i = 0; i < Pages[this->page].GameObjs.size(); i++) {
                     if (MouseCollision(Pages[this->page].GameObjs[i])) {
-                        if (int pos = Pages[this->page].GameObjs[i].ID.find("UID") != std::string::npos) {
-                            setComposition(procIndex, std::stoi(Pages[this->page].GameObjs[i].ID.substr(pos + 2)));
-                            this->State = GAME_ACTIVE;
+                        if (int pos = Pages[this->page].GameObjs[i].ID.find("UCID") != std::string::npos) {
+                            std::string selectID = Pages[this->page].GameObjs[i].ID;
+                            int select = std::stoi(Pages[this->page].GameObjs[i].ID.substr(pos + 3));
+                            setComposition(procIndex, select);
                             this->page = 3;
                             Pages[this->page].Draw(*Renderer);
+                            this->State = GAME_ACTIVE;
                         }
                     }
                 }

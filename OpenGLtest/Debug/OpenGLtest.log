@@ -1,4 +1,14 @@
-﻿  Game.cpp
-D:\GitHub\OpenGLtest\OpenGLtest\Game.cpp(90,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-D:\GitHub\OpenGLtest\OpenGLtest\Game.cpp(123,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  OpenGLtest.vcxproj -> D:\GitHub\OpenGLtest\Debug\OpenGLtest.exe
+﻿  cTest.c
+  Game.cpp
+C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\OpenGLtest\Game.cpp(92,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\OpenGLtest\Game.cpp(113,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\OpenGLtest\Game.cpp(125,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\OpenGLtest\Game.cpp(147,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  Main.cpp
+C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\OpenGLtest\Main.cpp(56,22): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\OpenGLtest\Main.cpp(121,18): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\OpenGLtest\Main.cpp(127,18): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  RenderStorage.cpp
+  코드를 생성하고 있습니다...
+LINK : warning LNK4098: 'MSVCRT' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
+  OpenGLtest.vcxproj -> C:\Users\OxxOLaptop\Documents\GitHub\OpenGL\OpenGLtest\Debug\OpenGLtest.exe
