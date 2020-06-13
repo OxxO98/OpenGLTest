@@ -67,6 +67,7 @@ int main(int argc, char** argv) {
 		Breakout.ProcessInput(deltaTime);
 		
 		//CÆÄÆ® update game state
+		std::cout << Breakout.State << std::endl;
 		Breakout.Update(deltaTime);
 		
 		//render
