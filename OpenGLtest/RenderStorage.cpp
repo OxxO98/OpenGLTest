@@ -26,7 +26,7 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, std::str
 			int UCID = userCharacters[i].UCID;
 			std::string CIDstr = "CID" + std::to_string(CID);
 			std::string UCIDstr = "UCID" + std::to_string(UCID);
-			std::cout << CIDstr << std::endl;
+			std::cout << UCIDstr << std::endl;
 			pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110.0f, 202.0f), CIDstr, UCIDstr));
 			xStart += 110.0f;
 		}
