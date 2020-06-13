@@ -14,6 +14,7 @@ class GamePage
 public:
 	//page state equals level state?
 	std::vector<GameObject> GameObjs;
+	std::string PID;
 	//constructor
 	GamePage() { }
 	//load page from file? not in progressing

@@ -9,7 +9,7 @@
 
 void GamePage::Load(std::string page, unsigned int pageWidth, unsigned int pageHeight) {
     this->GameObjs.clear();
-     
+    PID = page;
     std::vector<RenderObj> pageData;
 
     //포인터로 렌더링 데이터만 가져오기
