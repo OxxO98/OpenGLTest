@@ -51,6 +51,9 @@
     <ClCompile Include="RenderStorage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GMKL.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\OpenGL\includes\oxxoShader\3.3.shader.fs">
@@ -101,6 +104,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="RenderStorage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GMKL.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

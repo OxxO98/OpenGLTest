@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "cTest.h"
 
+//UserCharacter nchar;
 UserCharacter userCharacters[3];
 int compCharacters[9];
 int procIndex;
@@ -46,14 +47,27 @@ void showUserCharacter(UserCharacter character) {
 	printf("%d\n", character.dfnsPower);
 }
 
+UserCharacter getUserCharacter(int UCID) {
+	for (int i = 0; i < sizeof(userCharacters) / sizeof(UserCharacter); i++) {
+		if (userCharacters[i].UCID == UCID) {
+			return userCharacters[i];
+		}
+	}
+	return nchar;
+}
+
+int getComposition(int index) {
+	return compCharacters[index];
+}
+
 void setComposition(int index, int UCID) {
 	compCharacters[index] = UCID;
-	printf("%d", UCID);
+	printf("setComp : UCID %d\n", UCID);
 }
 
 void procComposition(int index) {
 	procIndex = index;
-	printf("%d", index);
+	printf("procComp : SetButton %d\n", index);
 }
 
 void initComposition() {

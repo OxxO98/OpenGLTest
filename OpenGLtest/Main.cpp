@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 		Breakout.ProcessInput(deltaTime);
 		
 		//CÆÄÆ® update game state
-		std::cout << Breakout.State << std::endl;
+		//std::cout << Breakout.State << std::endl;
 		Breakout.Update(deltaTime);
 		
 		//render
@@ -74,6 +74,7 @@ int main(int argc, char** argv) {
 		Breakout.Render();
 
 		glfwSwapBuffers(window);
+		glfwWaitEvents();
 		glfwSetWindowSizeCallback(window, windowSizeCallback);
 	}
 	

@@ -150,6 +150,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="GamePage.cpp" />
+    <ClCompile Include="GMKL.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RenderObj.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -173,6 +174,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="GamePage.h" />
+    <ClInclude Include="GMKL.h" />
     <ClInclude Include="RenderObj.h" />
     <ClInclude Include="RenderStorage.h" />
     <ClInclude Include="ResourceManager.h" />

@@ -1,23 +1,42 @@
 #include "RenderStorage.h"
 #include "cTest.h"
+#include "Game.h"
+#include "GMKL.h"
 
 #include <string>
 #include <iostream>
 
-void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, std::string page) {
-	if (page == "MainMenu") {
-		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "mainBackground", "mainBackground"));
+void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page) {
+	if (page == GMKL::MAIN_PAGE) {
+		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "mainBackground", "none"));
 		pageData->push_back(RenderObj(glm::vec2(758.0f, 259.0f), glm::vec2(450, 179), "fight", "fight"));
 		pageData->push_back(RenderObj(glm::vec2(780.0f, 457.0f), glm::vec2(225, 105), "list", "list"));
 		pageData->push_back(RenderObj(glm::vec2(968.0f, 528.0f), glm::vec2(225, 105), "set", "set"));
 	}
-	if (page == "BattlePage") {
-		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "battleBackground", "battleBackground"));
-		pageData->push_back(RenderObj(glm::vec2(146.0f, 382.0f), glm::vec2(110, 202), "CID1", "character"));
-		pageData->push_back(RenderObj(glm::vec2(459.0f, 264.0f), glm::vec2(110, 202), "CID1", "character"));
+	if (page == GMKL::BATTLE_PAGE) {
+		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "battleBackground", "none"));
+		float xStart = 261.0f;
+		float yStart = 265.0f;
+		float xGap = 92.0f;
+		float yGap = 55.0f;
+		for (int i = 0; i < 9; i++) {
+			if (getComposition(i) != -1) {
+				int UCID = getUserCharacter(getComposition(i)).UCID;
+				int CID = getUserCharacter(getComposition(i)).CID;
+				std::string UCIDstr = "UCID" + std::to_string(UCID);
+				std::string CIDstr = "CID" + std::to_string(CID);
+				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110, 202), CIDstr, UCIDstr));
+			}
+			xStart += xGap;
+			if ((i + 1) % 3 == 0) {
+				xStart = 261.0f;
+				xStart -= 57.0f * (i/3 +1);
+				yStart += yGap;
+			}
+		}
 	}
-	if (page == "CharactersPage") {
-		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "listBackground", "listBackground"));
+	if (page == GMKL::LIST_PAGE) {
+		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "listBackground", "none"));
 		pageData->push_back(RenderObj(glm::vec2(11.0f, 11.0f), glm::vec2(139, 46), "backwardButton", "backwardButton"));
 		float xStart = 40.0f;
 		float yStart = 63.0f;
@@ -31,8 +50,8 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, std::str
 			xStart += 110.0f;
 		}
 	}
-	if (page == "SettingPage") {
-		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "listBackground", "listBackground"));
+	if (page == GMKL::COMPOSITION_PAGE) {
+		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "listBackground", "none"));
 		pageData->push_back(RenderObj(glm::vec2(11.0f, 11.0f), glm::vec2(139, 46), "backwardButton", "backwardButton"));
 		float xStart = 132.0f;
 		float yStart = 165.0f;
@@ -42,8 +61,9 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, std::str
 				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(115, 115), "setButton", RIDstr));
 			}
 			else {
-				std::string CIDstr = "CID" + std::to_string(compCharacters[i]);
-				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110, 202), CIDstr, "character"));
+				std::string UCIDstr = "UCID" + std::to_string(compCharacters[i]);
+				std::string CIDstr = "CID" + std::to_string(getUserCharacter(compCharacters[i]).CID);
+				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(115, 115), CIDstr, UCIDstr));
 			}
 			xStart += 115.0f;
 			if ((i+1) % 3 == 0) {
