@@ -7,7 +7,7 @@
 //CÆÄÆ®
 //#include "cTest.h"
 
-void GamePage::Load(std::string page, unsigned int pageWidth, unsigned int pageHeight) {
+void GamePage::Load(int page, unsigned int pageWidth, unsigned int pageHeight) {
     this->GameObjs.clear();
     PID = page;
     std::vector<RenderObj> pageData;

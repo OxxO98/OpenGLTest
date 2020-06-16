@@ -14,11 +14,11 @@ class GamePage
 public:
 	//page state equals level state?
 	std::vector<GameObject> GameObjs;
-	std::string PID;
+	int PID;
 	//constructor
 	GamePage() { }
 	//load page from file? not in progressing
-	void Load(std::string page, unsigned int pageWidth, unsigned int pageHeight);
+	void Load(int page, unsigned int pageWidth, unsigned int pageHeight);
 	//render Page
 	void Draw(SpriteRenderer& render);
 	//check compiled

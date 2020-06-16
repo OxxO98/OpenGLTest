@@ -34,7 +34,7 @@ public:
     void Update(float dt);
     void Render();
 
-    unsigned int MouseCollision(GameObject obj);
+    std::string MouseCollision(std::vector<GameObject> obj);
 };
 
 #endif
