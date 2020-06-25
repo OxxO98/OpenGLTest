@@ -9,7 +9,6 @@
 enum GameState {
     GAME_ACTIVE,
     GAME_MENU,
-    GAME_PROC,
     GAME_UPDATE
 };
 
