@@ -9,9 +9,12 @@
 void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page) {
 	if (page == GMKL::MAIN_PAGE) {
 		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "mainBackground", "none"));
-		pageData->push_back(RenderObj(glm::vec2(758.0f, 259.0f), glm::vec2(450, 179), "fight", "fight"));
-		pageData->push_back(RenderObj(glm::vec2(780.0f, 457.0f), glm::vec2(225, 105), "list", "list"));
-		pageData->push_back(RenderObj(glm::vec2(968.0f, 528.0f), glm::vec2(225, 105), "set", "set"));
+		pageData->push_back(RenderObj(glm::vec2(815.73f, 203.33f), glm::vec2(190, 112), "healButton", GMKL::makeRID(0, 0, 0)));
+		pageData->push_back(RenderObj(glm::vec2(815.73f, 333.05f), glm::vec2(190, 112), "listButton", GMKL::makeRID(0, 0, 1)));
+		pageData->push_back(RenderObj(glm::vec2(815.73f, 463.02f), glm::vec2(190, 162), "stageButton", GMKL::makeRID(0, 0, 2)));
+		pageData->push_back(RenderObj(glm::vec2(1028.28f, 171.48f), glm::vec2(190, 112), "gattyaButton", GMKL::makeRID(0, 0, 3)));
+		pageData->push_back(RenderObj(glm::vec2(1028.28f, 301.18f), glm::vec2(190, 112), "kenkyuButton", GMKL::makeRID(0, 0, 4)));
+		pageData->push_back(RenderObj(glm::vec2(1028.28f, 431.17f), glm::vec2(190, 162), "compositionButton", GMKL::makeRID(0, 0, 5)));
 	}
 	if (page == GMKL::BATTLE_PAGE) {
 		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "battleBackground", "none"));
@@ -23,9 +26,7 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 			if (getComposition(i) != -1) {
 				int UCID = getUserCharacter(getComposition(i)).UCID;
 				int CID = getUserCharacter(getComposition(i)).CID;
-				std::string UCIDstr = "UCID" + std::to_string(UCID);
-				std::string CIDstr = "CID" + std::to_string(CID);
-				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110, 202), CIDstr, UCIDstr));
+				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110, 202), GMKL::toCIDString(CID), GMKL::toUCIDString(UCID)));
 			}
 			xStart += xGap;
 			if ((i + 1) % 3 == 0) {
@@ -43,10 +44,7 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 		for (int i = 0; i < 3; i++) {
 			int CID = userCharacters[i].CID;
 			int UCID = userCharacters[i].UCID;
-			std::string CIDstr = "CID" + std::to_string(CID);
-			std::string UCIDstr = "UCID" + std::to_string(UCID);
-			std::cout << UCIDstr << std::endl;
-			pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110.0f, 202.0f), CIDstr, UCIDstr));
+			pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110.0f, 202.0f), GMKL::toCIDString(CID), GMKL::toUCIDString(UCID)));
 			xStart += 110.0f;
 		}
 	}
@@ -57,13 +55,12 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 		float yStart = 165.0f;
 		for (int i = 0; i < 9; i++) {
 			if (compCharacters[i] == -1) {
-				std::string RIDstr = "setButton" + std::to_string(i);
-				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(115, 115), "setButton", RIDstr));
+				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(115, 115), "setButton", GMKL::toIDString(i, "setButton")));
 			}
 			else {
-				std::string UCIDstr = "UCID" + std::to_string(compCharacters[i]);
-				std::string CIDstr = "CID" + std::to_string(getUserCharacter(compCharacters[i]).CID);
-				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(115, 115), CIDstr, UCIDstr));
+				int UCID = compCharacters[i];
+				int CID = getUserCharacter(compCharacters[i]).CID;
+				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(115, 115), GMKL::toCIDString(CID), GMKL::toUCIDString(UCID)));
 			}
 			xStart += 115.0f;
 			if ((i+1) % 3 == 0) {
@@ -71,5 +68,10 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 				xStart = 132.0f;
 			}
 		}
+	}
+	if (page == GMKL::STAGE_PAGE) {
+		pageData->push_back(RenderObj(glm::vec2(0, 0), glm::vec2(1280, 720), "stageBackground", "none"));
+		pageData->push_back(RenderObj(glm::vec2(11.0f, 11.0f), glm::vec2(139, 46), "backwardButton", "backwardButton"));
+		pageData->push_back(RenderObj(glm::vec2(455.0f, 484.0f), glm::vec2(147, 49), "stage1-1", "stage1-1"));
 	}
 }
