@@ -2,11 +2,13 @@
 #define GMKL_H
 #include <string>
 #include <queue>
+#include <vector>
+#include "gameObject.h"
 
 class GMKL
 {
 public:
-	//enum
+	//enum Pages에 들어가는 순서대로 넣어줘야함
 	enum GamePageName {
         MAIN_PAGE,
         LIST_PAGE,
@@ -23,6 +25,12 @@ public:
     static int toID(std::string RIDstr, std::string findStr); //영어+숫자에서 숫자만 반환
     static std::string toIDString(int ID, std::string IDstr);
     static std::string makeRID(int pageNum, int groupNum, int buttonNum);
+
+    static GameObject* getGameObject(std::vector<GameObject> *gameObjs, std::string ID);
+
+    static void loadBackground();
+    static void loadResource();
+    static void loadCharacter();
 
 private:
 	GMKL() {}

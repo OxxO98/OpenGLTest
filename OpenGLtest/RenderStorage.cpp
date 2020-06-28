@@ -9,12 +9,10 @@
 void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page) {
 	if (page == GMKL::MAIN_PAGE) {
 		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "mainBackground", "none"));
-		pageData->push_back(RenderObj(glm::vec2(815.73f, 203.33f), glm::vec2(190, 112), "healButton", GMKL::makeRID(0, 0, 0)));
-		pageData->push_back(RenderObj(glm::vec2(815.73f, 333.05f), glm::vec2(190, 112), "listButton", GMKL::makeRID(0, 0, 1)));
-		pageData->push_back(RenderObj(glm::vec2(815.73f, 463.02f), glm::vec2(190, 162), "stageButton", GMKL::makeRID(0, 0, 2)));
-		pageData->push_back(RenderObj(glm::vec2(1028.28f, 171.48f), glm::vec2(190, 112), "gattyaButton", GMKL::makeRID(0, 0, 3)));
-		pageData->push_back(RenderObj(glm::vec2(1028.28f, 301.18f), glm::vec2(190, 112), "kenkyuButton", GMKL::makeRID(0, 0, 4)));
-		pageData->push_back(RenderObj(glm::vec2(1028.28f, 431.17f), glm::vec2(190, 162), "compositionButton", GMKL::makeRID(0, 0, 5)));
+		pageData->push_back(RenderObj(glm::vec2(70.0f, 590.0f), glm::vec2(285, 130), "stageButton", GMKL::makeRID(0, 0, 0)));
+		pageData->push_back(RenderObj(glm::vec2(355.0f, 590.0f), glm::vec2(285, 130), "compositionButton", GMKL::makeRID(0, 0, 1)));
+		pageData->push_back(RenderObj(glm::vec2(640.0f, 590.0f), glm::vec2(285, 130), "listButton", GMKL::makeRID(0, 0, 2)));
+		pageData->push_back(RenderObj(glm::vec2(925.0f, 590.0f), glm::vec2(285, 130), "gattyaButton", GMKL::makeRID(0, 0, 3)));
 	}
 	if (page == GMKL::BATTLE_PAGE) {
 		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "battleBackground", "none"));
@@ -35,6 +33,8 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 				yStart += yGap;
 			}
 		}
+		pageData->push_back(RenderObj(glm::vec2(920.0f, 265.0f), glm::vec2(370, 188), "MID0", "MID0"));
+		pageData->push_back(RenderObj(glm::vec2(920.0f, 465.0f), glm::vec2(370, 188), "MID0", "MID1"));
 	}
 	if (page == GMKL::LIST_PAGE) {
 		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "listBackground", "none"));

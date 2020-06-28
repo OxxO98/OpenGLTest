@@ -15,10 +15,10 @@ void GamePage::Load(int page, unsigned int pageWidth, unsigned int pageHeight) {
     //포인터로 렌더링 데이터만 가져오기
     RenderStorage::LoadRenderStorage(&pageData, page);
 
-
     if (true) {
         this->init(pageData, pageWidth, pageHeight);
     }
+
 }
 
 
