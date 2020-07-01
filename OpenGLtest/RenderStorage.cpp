@@ -22,8 +22,8 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 		float yGap = 55.0f;
 		for (int i = 0; i < 9; i++) {
 			if (getComposition(i) != -1) {
-				int UCID = getUserCharacter(getComposition(i)).UCID;
-				int CID = getUserCharacter(getComposition(i)).CID;
+				int UCID = getUserCharacter(getComposition(i))->UCID;
+				int CID = getUserCharacter(getComposition(i))->CID;
 				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110, 202), GMKL::toCIDString(CID), GMKL::toUCIDString(UCID)));
 			}
 			xStart += xGap;
@@ -34,7 +34,8 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 			}
 		}
 		pageData->push_back(RenderObj(glm::vec2(920.0f, 265.0f), glm::vec2(370, 188), "MID0", "MID0"));
-		pageData->push_back(RenderObj(glm::vec2(920.0f, 465.0f), glm::vec2(370, 188), "MID0", "MID1"));
+		pageData->push_back(RenderObj(glm::vec2(920.0f, 320.0f), glm::vec2(370, 188), "MID0", "MID1"));
+		pageData->push_back(RenderObj(glm::vec2(920.0f, 375.0f), glm::vec2(370, 188), "MID0", "MID2"));
 	}
 	if (page == GMKL::LIST_PAGE) {
 		pageData->push_back(RenderObj(glm::vec2(0.0f, 0.0f), glm::vec2(1280, 720), "listBackground", "none"));
@@ -59,7 +60,7 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 			}
 			else {
 				int UCID = compCharacters[i];
-				int CID = getUserCharacter(compCharacters[i]).CID;
+				int CID = getUserCharacter(compCharacters[i])->CID;
 				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(115, 115), GMKL::toCIDString(CID), GMKL::toUCIDString(UCID)));
 			}
 			xStart += 115.0f;
@@ -73,5 +74,27 @@ void RenderStorage::LoadRenderStorage(std::vector<RenderObj>* pageData, int page
 		pageData->push_back(RenderObj(glm::vec2(0, 0), glm::vec2(1280, 720), "stageBackground", "none"));
 		pageData->push_back(RenderObj(glm::vec2(11.0f, 11.0f), glm::vec2(139, 46), "backwardButton", "backwardButton"));
 		pageData->push_back(RenderObj(glm::vec2(455.0f, 484.0f), glm::vec2(147, 49), "stage1-1", "stage1-1"));
+	}
+}
+
+void RenderStorage::UpdateRenderStorage(std::vector<RenderObj>* pageData, int page) {
+	if (page == GMKL::BATTLE_PAGE) {
+		float xStart = 261.0f;
+		float yStart = 265.0f;
+		float xGap = 92.0f;
+		float yGap = 55.0f;
+		for (int i = 0; i < 9; i++) {
+			if (getComposition(i) != -1) {
+				int UCID = getUserCharacter(getComposition(i))->UCID;
+				int CID = getUserCharacter(getComposition(i))->CID;
+				pageData->push_back(RenderObj(glm::vec2(xStart, yStart), glm::vec2(110, 202), GMKL::toCIDString(CID), GMKL::toUCIDString(UCID)));
+			}
+			xStart += xGap;
+			if ((i + 1) % 3 == 0) {
+				xStart = 261.0f;
+				xStart -= 57.0f * (i / 3 + 1);
+				yStart += yGap;
+			}
+		}
 	}
 }

@@ -19,6 +19,7 @@ public:
 	GamePage() { }
 	//load page from file? not in progressing
 	void Load(int page, unsigned int pageWidth, unsigned int pageHeight);
+	void Update(int page);
 	//render Page
 	void Draw(SpriteRenderer& render);
 	//check compiled

@@ -1,9 +1,11 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "cTest.h"
 
 //UserCharacter nchar;
 UserCharacter userCharacters[3];
+Monster stageMonster[3];
 int compCharacters[9];
 int procIndex;
 
@@ -13,7 +15,9 @@ void initUserCharacters() {
 	userCharacters[0].level = 1;
 	userCharacters[0].exp = 0;
 	userCharacters[0].hp = 100;
-	userCharacters[0].attkPower = 200;
+	userCharacters[0].attkPower = 100;
+	userCharacters[0].attkVelocity = 200;
+	userCharacters[0].coolTime = 0;
 	userCharacters[0].dfnsPower = 150;
 
 	userCharacters[1].CID = 2;
@@ -21,7 +25,9 @@ void initUserCharacters() {
 	userCharacters[1].level = 1;
 	userCharacters[1].exp = 0;
 	userCharacters[1].hp = 100;
-	userCharacters[1].attkPower = 200;
+	userCharacters[1].attkPower = 150;
+	userCharacters[1].attkVelocity = 300;
+	userCharacters[1].coolTime = 0;
 	userCharacters[1].dfnsPower = 150;
 
 	userCharacters[2].CID = 3;
@@ -30,6 +36,8 @@ void initUserCharacters() {
 	userCharacters[2].exp = 0;
 	userCharacters[2].hp = 100;
 	userCharacters[2].attkPower = 200;
+	userCharacters[2].attkVelocity = 400;
+	userCharacters[2].coolTime = 0;
 	userCharacters[2].dfnsPower = 150;
 }
 
@@ -47,13 +55,25 @@ void showUserCharacter(UserCharacter character) {
 	printf("%d\n", character.dfnsPower);
 }
 
-UserCharacter getUserCharacter(int UCID) {
+UserCharacter* getUserCharacter(int UCID) {
 	for (int i = 0; i < sizeof(userCharacters) / sizeof(UserCharacter); i++) {
 		if (userCharacters[i].UCID == UCID) {
-			return userCharacters[i];
+			return &userCharacters[i];
 		}
 	}
-	return nchar;
+	return &nchar;
+}
+
+void initMonster() {
+	for (int i = 0; i < 3; i++) {
+		stageMonster[i].MID = 0;
+		stageMonster[i].UMID = i;
+		stageMonster[i].hp = 2000;
+		stageMonster[i].moveVelocity = -60;
+		stageMonster[i].attkPower = 20;
+		stageMonster[i].attkVelocity = 20;
+		stageMonster[i].Destroyed = false;
+	}
 }
 
 int getComposition(int index) {
@@ -73,5 +93,31 @@ void procComposition(int index) {
 void initComposition() {
 	for (int i = 0; i < 9; i++) {
 		compCharacters[i] = -1;
+	}
+	//compCharacters[0] = 0;
+	//compCharacters[4] = 1;
+	//compCharacters[8] = 2;
+}
+
+float aiMonster(int target, float dt) {
+	return stageMonster[target].moveVelocity * dt;
+}
+
+int appointTarget(int UCID) {
+	for (int i = 0; i < 9; i++) {
+		if (compCharacters[i] == -1) {
+			continue;
+		}
+		if (getUserCharacter(compCharacters[i])->UCID == UCID) {
+			if (0 <= i && i <= 2) {
+				return 0;
+			}
+			if (3 <= i && i <= 5) {
+				return 1;
+			}
+			if (6 <= i && i <= 8) {
+				return 2;
+			}
+		}
 	}
 }
