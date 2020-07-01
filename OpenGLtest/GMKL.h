@@ -32,6 +32,8 @@ public:
     static void loadResource();
     static void loadCharacter();
 
+    static bool isCollision(GameObject* effect, GameObject* Monster);
+
 private:
 	GMKL() {}
 };

@@ -90,6 +90,7 @@ void GMKL::loadResource() {
 	ResourceManager::LoadTexture("img/Resource/backwardButton.png", true, "backwardButton");
 	ResourceManager::LoadTexture("img/Resource/setButton.png", true, "setButton");
 	ResourceManager::LoadTexture("img/Resource/stage1-1.png", true, "stage1-1");
+	ResourceManager::LoadTexture("img/Resource/attkEffect.png", true, "attkEffect");
 }
 
 void GMKL::loadCharacter() {
@@ -99,4 +100,15 @@ void GMKL::loadCharacter() {
 	ResourceManager::LoadTexture("img/CID/CID3.png", true, "CID3");
 
 	ResourceManager::LoadTexture("img/CID/MID0.png", true, "MID0");
+}
+
+bool GMKL::isCollision(GameObject* effect, GameObject* Monster) {
+	float x = effect->Position.x + (effect->Size.x / 2);
+	float y = effect->Position.y + (effect->Size.y / 2);
+	if (Monster->Position.x <= x && x <= Monster->Position.x + Monster->Size.x) {
+		if (Monster->Position.y <= y && y <= Monster->Position.y + Monster->Size.y) {
+			return true;
+		}
+	}
+	return false;
 }

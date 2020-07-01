@@ -11,4 +11,5 @@
 class RenderStorage {
 public:
 	static void LoadRenderStorage(std::vector<RenderObj>* pageData, int page);
+	static void UpdateRenderStorage(std::vector<RenderObj>* pagedata, int page);
 };
