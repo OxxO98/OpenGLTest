@@ -3,6 +3,7 @@
 #include "SpriteRenderer.h"
 #include "GamePage.h"
 #include "GMKL.h"
+#include "RenderStorage.h"
 
 #include <iostream>
 #include <string>
@@ -11,10 +12,10 @@
 #include "cTest.h"
 
 SpriteRenderer* Renderer;
-std::vector<GameObject*> Monsters[3];
-std::vector<GameObject> Effect;
 
-//const glm::vec2 PLAYER_SIZE(200.0f, 200.0f);
+std::vector<MonsterObject> Monsters[3];
+std::vector<EffectObject> Effect;
+std::vector<CharacterObject> Characters;
 
 Game::Game(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Mouse(), MouseEvent(), Width(width), Height(height)
@@ -70,41 +71,39 @@ void Game::Init()
     this->Pages.push_back(BattlePage);
     //현재 페이지
     this->page = 0;
-
-    //전역변수 할당은 Pages에 push_back이후에
 }
 
 void Game::Update(float dt)
 {
     //여기서 std::cout std::endl을 쓰는건 조금 그렇지 않나.
     if (Pages[this->page].PID == GMKL::BATTLE_PAGE) {
-        //Monster Active
+        //Monster Act
         for (int i = 0; i < 3; i++) {
-            for (GameObject* elem : Monsters[i]) {
-                elem->Position.x += aiMonster(GMKL::toID(elem->ID, "MID"), dt);
+            for (MonsterObject &elem : Monsters[i]) {
+                elem.Position.x += aiMonster(elem.data->MID, dt);
             }
         }
-        //Character Active
-        for (int i = 0; i < 9; i++) {
-            if (compCharacters[i] == -1) {
-                continue;
+        //Character Act
+        for (CharacterObject &elem : Characters) {
+            elem.data->coolTime += dt;
+            if (!Monsters[appointTarget(elem.data->UCID)].empty()) {
+                elem.target = &Monsters[appointTarget(elem.data->UCID)].front();
             }
-            getUserCharacter(compCharacters[i])->coolTime += dt;
-            //std::cout << getUserCharacter(compCharacters[i])->coolTime << std::endl;
-            if (getUserCharacter(compCharacters[i])->coolTime >= 0.5f && !Monsters[appointTarget((getUserCharacter(compCharacters[i])->UCID))].empty()) {
-                Effect.push_back(GameObject(GMKL::getGameObject(&Pages[this->page].GameObjs, GMKL::toUCIDString(getUserCharacter(compCharacters[i])->UCID))->Position, glm::vec2(18, 19), ResourceManager::GetTexture("attkEffect"), GMKL::toUCIDString(getUserCharacter(compCharacters[i])->UCID)));
-                getUserCharacter(compCharacters[i])->coolTime = 0.0f;
+            else {
+                elem.target = NULL;
+            }
+            if (elem.data->coolTime >= 0.5f && elem.target != NULL) {
+                Effect.push_back(EffectObject(&elem, appointTarget(elem.data->UCID), GameObject(elem.Position, glm::vec2(18, 19), ResourceManager::GetTexture("attkEffect"), GMKL::toUCIDString(elem.data->UCID))));
+                elem.data->coolTime = 0.0f;
             }
         }
-        //Effect Active 
-        for (std::vector<GameObject>::iterator it = Effect.begin(); it != Effect.end(); it++) {
-            UserCharacter* linjiCharacter = getUserCharacter(GMKL::toUCID(it->ID));
-            it->Position.x += linjiCharacter->attkVelocity * dt;
-            int linjiTarget = appointTarget(GMKL::toUCID(it->ID));
-            if (!Monsters[linjiTarget].empty()) {
-                if (GMKL::isCollision(&(*it), *Monsters[linjiTarget].begin())) {
-                    stageMonster[linjiTarget].hp -= linjiCharacter->attkPower;
-                    std::cout << "충돌" << stageMonster[linjiTarget].hp << std::endl;
+        //Effect Act
+        for (std::vector<EffectObject>::iterator it = Effect.begin(); it != Effect.end(); it++) {
+            it->Position.x += it->UCID->data->attkVelocity * dt;
+            if (!Monsters[it->Target].empty()) {
+                if (GMKL::isCollision(&(*it), dynamic_cast<GameObject*>(&Monsters[it->Target].front()))) {
+                    stageMonster[it->Target].hp -= it->UCID->data->attkPower;
+                    std::cout << "충돌" << stageMonster[it->Target].hp << std::endl;
                     it->Destroyed = true;
                     Effect.erase(it);
                     break;
@@ -113,17 +112,15 @@ void Game::Update(float dt)
         }
         //Monster Destroyed
         for (int i = 0; i < 3; i++) {
-            if (stageMonster[i].hp <= 0 && !stageMonster[i].Destroyed) {
-                std::cout << stageMonster[i].UMID << "DIE" << std::endl;
-                for (std::vector<GameObject*>::iterator it = Monsters[i].begin(); it != Monsters[i].end(); it++) {
-                    if ((*it)->ID == GMKL::toIDString(stageMonster[i].UMID, "MID")) {
-                        std::cout << (*it)->ID << "DELETED" << std::endl;
-                        Monsters[i].erase(it);
-                        break;
-                    }
-                } //Monsters에서 지우기
-                GMKL::getGameObject(&(Pages[this->page].GameObjs), GMKL::toIDString(stageMonster[i].UMID, "MID"))->Destroyed = true; //gameObjs에서 지우기
-                stageMonster[i].Destroyed = true; //stageMonster에서 Destroyed 처리하기
+            for (std::vector<MonsterObject>::iterator it = Monsters[i].begin(); it != Monsters[i].end(); it++) {
+                if (it->data->hp <= 0 && !it->data->Destroyed) {
+                    std::cout << it->data->UMID << "DIE" << std::endl;
+                    std::cout << it->ID << "DELETED" << std::endl;
+                    it->data->Destroyed = true; //stageMonster에서 Destroyed 처리하기
+                    it->Destroyed = true; //gameObjs에서 지우기
+                    Monsters[i].erase(it); //Monsters에서 지우기
+                    break;
+                }
             }
         }
     }
@@ -189,10 +186,9 @@ void Game::ProcessInput(float dt)
                 std::string ID = MouseCollision(Pages[this->page].GameObjs);
                 if (ID == "stage1-1") {
                     this->page = GMKL::BATTLE_PAGE;
-                    Pages[this->page].Update(GMKL::BATTLE_PAGE); //GameObjs의 베모리 주소 이동
-                    Monsters[0].push_back(GMKL::getGameObject(&(Pages[GMKL::BATTLE_PAGE].GameObjs), "MID0"));
-                    Monsters[1].push_back(GMKL::getGameObject(&(Pages[GMKL::BATTLE_PAGE].GameObjs), "MID1"));
-                    Monsters[2].push_back(GMKL::getGameObject(&(Pages[GMKL::BATTLE_PAGE].GameObjs), "MID2"));
+                    //Pages[this->page].Update(GMKL::BATTLE_PAGE); //갑자기 쓸모 없어짐?
+                    RenderStorage::GetDataRenderStorage(Monsters, stageMonster, RenderStorage::MONSTER, GMKL::BATTLE_PAGE);
+                    RenderStorage::GetDataRenderStorage(&Characters, NULL, RenderStorage::CHARACTER, GMKL::BATTLE_PAGE);
                 }
                 if (ID == "backwardButton") {
                     this->page = GMKL::MAIN_PAGE;
@@ -207,7 +203,19 @@ void Game::Render()
     //Page Render
     this->Pages[this->page].Draw(*Renderer);
     if (this->page == GMKL::BATTLE_PAGE) {
-        for (GameObject elem : Effect) {
+        for (EffectObject &elem : Effect) {
+            if (!elem.Destroyed) {
+                elem.Draw(*Renderer);
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (MonsterObject &elem : Monsters[i]) {
+                if (!elem.Destroyed) {
+                    elem.Draw(*Renderer);
+                }
+            }
+        }
+        for (CharacterObject &elem : Characters) {
             if (!elem.Destroyed) {
                 elem.Draw(*Renderer);
             }

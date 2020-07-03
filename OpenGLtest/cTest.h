@@ -16,6 +16,7 @@ typedef struct _UserCharacter {
 	int attkVelocity;
 	float coolTime;
 	int dfnsPower;	//¹æ¾î·Â
+	bool depolyed;
 } UserCharacter;
 
 typedef struct _Monster {
