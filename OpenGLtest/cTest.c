@@ -19,6 +19,7 @@ void initUserCharacters() {
 	userCharacters[0].attkVelocity = 200;
 	userCharacters[0].coolTime = 0;
 	userCharacters[0].dfnsPower = 150;
+	userCharacters[0].depolyed = false;
 
 	userCharacters[1].CID = 2;
 	userCharacters[1].UCID = 1;
@@ -29,6 +30,7 @@ void initUserCharacters() {
 	userCharacters[1].attkVelocity = 300;
 	userCharacters[1].coolTime = 0;
 	userCharacters[1].dfnsPower = 150;
+	userCharacters[0].depolyed = false;
 
 	userCharacters[2].CID = 3;
 	userCharacters[2].UCID = 2;
@@ -39,6 +41,7 @@ void initUserCharacters() {
 	userCharacters[2].attkVelocity = 400;
 	userCharacters[2].coolTime = 0;
 	userCharacters[2].dfnsPower = 150;
+	userCharacters[0].depolyed = false;
 }
 
 void showUserCharacters() {
@@ -81,8 +84,13 @@ int getComposition(int index) {
 }
 
 void setComposition(int index, int UCID) {
+	if (getUserCharacter(UCID)->depolyed == true) {
+		printf("이미 배치된 UCID입니다.\n");
+		return;
+	}
 	compCharacters[index] = UCID;
 	printf("setComp : UCID %d\n", UCID);
+	getUserCharacter(UCID)->depolyed = true;
 }
 
 void procComposition(int index) {
@@ -94,9 +102,6 @@ void initComposition() {
 	for (int i = 0; i < 9; i++) {
 		compCharacters[i] = -1;
 	}
-	//compCharacters[0] = 0;
-	//compCharacters[4] = 1;
-	//compCharacters[8] = 2;
 }
 
 float aiMonster(int target, float dt) {
